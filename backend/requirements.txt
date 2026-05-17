@@ -10,6 +10,8 @@ cryptography==48.0.0
 deprecation==2.1.0
 fastapi==0.136.1
 fsspec==2026.4.0
+GeoAlchemy2==0.20.0
+geojson-pydantic==2.1.1
 greenlet==3.5.0
 h11==0.16.0
 h2==4.3.0
@@ -18,6 +20,7 @@ httpcore==1.0.9
 httpx==0.28.1
 hyperframe==6.1.0
 idna==3.14
+-e git+https://github.com/Itipatidar04/MaptoMeet.git@402f5fdc0d51ef92178cacf860c85abe57819be4#egg=maptomeet_backend&subdirectory=backend
 markdown-it-py==4.2.0
 mdurl==0.1.2
 mmh3==5.2.1
@@ -28,6 +31,7 @@ propcache==0.5.2
 psycopg2-binary==2.9.12
 pycparser==3.0
 pydantic==2.13.4
+pydantic-settings==2.14.1
 pydantic_core==2.46.4
 Pygments==2.20.0
 pyiceberg==0.11.1
