@@ -1,8 +1,16 @@
 import Map, { Marker, type MapRef } from "react-map-gl/mapbox";
+import type { CurrentLocation } from "../services/geolocationService";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { useRef } from "react";
 
-function MapView() {
+//creating props interface
+interface MapViewProps {
+  currentLocation: CurrentLocation | null;
+}
+
+//adding props to mapview
+function MapView({ currentLocation }: MapViewProps) {
+  console.log("MapView Location:", currentLocation);
   const mapRef = useRef<MapRef | null>(null);
   const handleZoomIn = () => {
     mapRef.current?.getMap().zoomIn();
@@ -28,7 +36,7 @@ function MapView() {
         initialViewState={{
           longitude: 75.8577,
           latitude: 22.7196,
-          zoom: 11,
+          zoom: 13,
         }}
         style={{ width: "100%", height: "100%" }}
         mapStyle="mapbox://styles/mapbox/dark-v11"
@@ -39,6 +47,15 @@ function MapView() {
         <Marker longitude={75.8937} latitude={22.7533}>
           <div>🔴</div>
         </Marker>
+
+        {currentLocation && (
+          <Marker
+            longitude={currentLocation.longitude}
+            latitude={currentLocation.latitude}
+          >
+            <div>🔵</div>
+          </Marker>
+        )}
       </Map>
     </div>
   );

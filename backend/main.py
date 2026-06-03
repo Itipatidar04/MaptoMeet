@@ -1,4 +1,7 @@
 from app.database.supabase_client import supabase
+from app.routes.current_location_routes import (
+    router as current_location_router,
+)
 from app.routes.location_routes import router as location_router
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -13,6 +16,12 @@ app.add_middleware(
 )
 
 app.include_router(location_router, prefix="/locations")
+# this creates POST /current-location
+app.include_router(
+    current_location_router,
+    prefix="/current_location",
+    tags=["Current Location"],
+)
 
 
 @app.get("/")
