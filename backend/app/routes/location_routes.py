@@ -1,18 +1,35 @@
-import requests
-from fastapi import APIRouter
+from typing import Literal
 
-# creates router object
+import requests
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel, Field
+
 router = APIRouter()
 
 
-# created search endpoint
-@router.get("/search")
-# function which will search location using nomination api
-def search_location(q: str):
+# Pydantic Models
 
-    # nomination api
+
+class Coordinate(BaseModel):
+    latitude: float = Field(..., ge=-90, le=90)
+    longitude: float = Field(..., ge=-180, le=180)
+
+
+class RouteRequest(BaseModel):
+    source: Coordinate
+    destination: Coordinate
+    profile: Literal["driving", "walking", "cycling"]
+
+
+# -----------------------------
+# Search Location Endpoint
+# -----------------------------
+
+
+@router.get("/search")
+def search_location(q: str):
     url = "https://nominatim.openstreetmap.org/search"
-    # query parameters that we passed for this api
+
     params = {
         "q": q,
         "format": "jsonv2",
@@ -20,20 +37,82 @@ def search_location(q: str):
         "viewbox": "75.70,22.85,75.95,22.60",
         "bounded": 1,
     }
-    # nomination uses headers(user agents: idetifies who is making the request). used to track user agents and identify clients and limit rate
+
     headers = {"User-Agent": "MapToMeetApp"}
-    # response of the query is saved in this variable
-    response = requests.get(url, params=params)
-    # that response is converted to json and saved in data
-    data = response.json()
-    cleaned_results = []
-    # this cleans fetched data recursively
-    for location in data:
-        cleaned_results.append(
-            {
-                "name": location["display_name"],
-                "latitude": location["lat"],
-                "longitude": location["lon"],
-            }
+
+    try:
+        response = requests.get(
+            url,
+            params=params,
+            headers=headers,
+            timeout=10,
         )
-    return cleaned_results
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        cleaned_results = []
+
+        for location in data:
+            cleaned_results.append(
+                {
+                    "name": location["display_name"],
+                    "latitude": float(location["lat"]),
+                    "longitude": float(location["lon"]),
+                }
+            )
+
+        return cleaned_results
+
+    except requests.RequestException as e:
+        raise HTTPException(
+            status_code=500, detail=f"Nominatim request failed: {str(e)}"
+        )
+
+
+# -----------------------------
+# Generate Route Endpoint
+# -----------------------------
+
+
+@router.post("/route")
+def get_route(request: RouteRequest):
+
+    source_lat = request.source.latitude
+    source_lon = request.source.longitude
+
+    destination_lat = request.destination.latitude
+    destination_lon = request.destination.longitude
+
+    # OSRM expects longitude,latitude
+    coordinates = f"{source_lon},{source_lat};{destination_lon},{destination_lat}"
+
+    url = f"https://router.project-osrm.org/route/v1/{request.profile}/{coordinates}"
+
+    params = {
+        "overview": "full",
+        "geometries": "geojson",
+    }
+
+    headers = {"User-Agent": "MapToMeetApp"}
+
+    try:
+        response = requests.get(
+            url,
+            params=params,
+            headers=headers,
+            timeout=10,
+        )
+
+        response.raise_for_status()
+
+        data = response.json()
+
+        # Optional debug log
+        print(data)
+
+        return data
+
+    except requests.RequestException as e:
+        raise HTTPException(status_code=500, detail=f"OSRM request failed: {str(e)}")

@@ -20,7 +20,7 @@ httpcore==1.0.9
 httpx==0.28.1
 hyperframe==6.1.0
 idna==3.14
--e git+https://github.com/Itipatidar04/MaptoMeet.git@402f5fdc0d51ef92178cacf860c85abe57819be4#egg=maptomeet_backend&subdirectory=backend
+# -e git+https://github.com/Itipatidar04/MaptoMeet.git@402f5fdc0d51ef92178cacf860c85abe57819be4#egg=maptomeet_backend&subdirectory=backend
 markdown-it-py==4.2.0
 mdurl==0.1.2
 mmh3==5.2.1
