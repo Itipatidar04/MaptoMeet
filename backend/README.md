@@ -84,3 +84,25 @@ npm run dev
 Frontend runs at:
 
 http://localhost:5173
+
+
+
+2nd June,2026
+the coordinates  we're getting through phone gps should be synchronized with laptop markers.
+Thus, we are doing these steps:
+
+Phone
+  ↓
+GPS
+  ↓
+POST /locations/current-location
+  ↓
+Backend
+
+Laptop
+  ↓
+GET /locations/current-location
+  ↓
+Backend
+  ↓
+Map Marker
