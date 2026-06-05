@@ -25,7 +25,7 @@ function formatDuration(seconds: number): string {
 
 function DetailsPanel({ source, destination, routeMeta }: DetailsPanelProps) {
   return (
-    <aside className="pointer-events-none absolute right-6 top-6 z-20 hidden w-72 lg:block">
+    <aside className="pointer-events-none absolute right-4 top-24 z-20 hidden w-80 lg:block xl:right-6">
       <div className="pointer-events-auto rounded-card border border-border bg-card p-5 shadow-panel transition-opacity duration-200">
         <h2 className="text-sm font-medium text-text-secondary">Route</h2>
         <div className="mt-4 space-y-3">
