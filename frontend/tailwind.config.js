@@ -31,7 +31,10 @@ export default {
         DEFAULT: "200ms",
       },
       maxHeight: {
-        suggestions: "240px",
+        suggestions: "280px",
+      },
+      width: {
+        "search-card": "520px",
       },
     },
   },
