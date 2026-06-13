@@ -1,4 +1,6 @@
+from app.config.config import settings
 from app.database.supabase_client import supabase
+from app.routes.auth_routes import router as auth_router
 from app.routes.current_location_routes import (
     router as current_location_router,
 )
@@ -22,6 +24,7 @@ app.include_router(
     prefix="/current_location",
     tags=["Current Location"],
 )
+app.include_router(auth_router)
 
 
 @app.get("/")
