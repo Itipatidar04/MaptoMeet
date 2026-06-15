@@ -1,6 +1,7 @@
 annotated-doc==0.0.4
 annotated-types==0.7.0
 anyio==4.13.0
+bcrypt==5.0.0
 cachetools==6.2.6
 certifi==2026.4.22
 cffi==2.0.0
@@ -8,6 +9,9 @@ charset-normalizer==3.4.7
 click==8.3.3
 cryptography==48.0.0
 deprecation==2.1.0
+dnspython==2.8.0
+ecdsa==0.19.2
+email-validator==2.3.0
 fastapi==0.136.1
 fsspec==2026.4.0
 GeoAlchemy2==0.20.0
@@ -20,7 +24,7 @@ httpcore==1.0.9
 httpx==0.28.1
 hyperframe==6.1.0
 idna==3.14
-# -e git+https://github.com/Itipatidar04/MaptoMeet.git@402f5fdc0d51ef92178cacf860c85abe57819be4#egg=maptomeet_backend&subdirectory=backend
+-e git+https://github.com/Itipatidar04/MaptoMeet.git@cf99bbe5b844187d9568e15ae3bc54b6be0d42c5#egg=maptomeet_backend&subdirectory=backend
 markdown-it-py==4.2.0
 mdurl==0.1.2
 mmh3==5.2.1
@@ -29,6 +33,7 @@ packaging==26.2
 postgrest==2.30.0
 propcache==0.5.2
 psycopg2-binary==2.9.12
+pyasn1==0.6.3
 pycparser==3.0
 pydantic==2.13.4
 pydantic-settings==2.14.1
@@ -40,9 +45,11 @@ pyparsing==3.3.2
 pyroaring==1.1.0
 python-dateutil==2.9.0.post0
 python-dotenv==1.2.2
+python-jose==3.5.0
 realtime==2.30.0
 requests==2.34.1
 rich==14.3.4
+rsa==4.9.1
 six==1.17.0
 SQLAlchemy==2.0.49
 starlette==1.0.0

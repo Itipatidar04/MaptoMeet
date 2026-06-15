@@ -3,6 +3,21 @@ import { useEffect, useRef, useState } from "react";
 import SuggestionsList from "./SuggestionsList";
 import { getRoute, searchLocations } from "../services/locationService";
 import type { Place, RouteMeta, RouteProfile } from "../types/location";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Search as SearchIcon,
+  ChevronDown as ChevronDownIcon,
+  X as CloseIcon,
+} from "lucide-react";
 
 const SEARCH_DEBOUNCE_MS = 300;
 
@@ -239,60 +254,62 @@ function SearchPanel({ onRouteReady, onRouteClear }: SearchPanelProps) {
       <div className="pointer-events-none absolute inset-x-0 top-0 z-30 flex justify-center px-4 pt-4 sm:pt-6">
         <div className="pointer-events-auto w-full max-w-[520px]">
           {!isOpen ? (
-          <button
-            type="button"
-            onClick={openPanel}
-            className="flex w-full items-center gap-3 rounded-modal border border-border bg-surface px-5 py-4 text-left shadow-panel transition-colors duration-200 hover:border-primary/40"
-            aria-label="Open route search"
-            aria-expanded={false}
-          >
-            <span
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-input bg-card text-primary"
-              aria-hidden
+            <Button
+              type="button"
+              onClick={openPanel}
+              variant="outline"
+              className="flex h-auto w-full items-center gap-3 rounded-modal border-border bg-surface px-5 py-4 text-left shadow-panel hover:bg-surface hover:border-primary/40"
+              aria-label="Open route search"
+              aria-expanded={false}
             >
-              <SearchIcon />
-            </span>
-            <span className="min-w-0 flex-1">
-              <span className="block text-xs font-medium text-text-secondary">
-                Plan your route
+              <span
+                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-input bg-card text-primary"
+                aria-hidden
+              >
+                <SearchIcon className="h-5 w-5" />
               </span>
-              <span className="mt-0.5 block truncate text-base font-normal text-text-primary">
-                {triggerLabel}
+              <span className="min-w-0 flex-1">
+                <span className="block text-xs font-medium text-text-secondary">
+                  Plan your route
+                </span>
+                <span className="mt-0.5 block truncate text-base font-normal text-text-primary">
+                  {triggerLabel}
+                </span>
               </span>
-            </span>
-            <span className="shrink-0 text-text-secondary" aria-hidden>
-              <ChevronDownIcon />
-            </span>
-          </button>
-        ) : (
-            <div
+              <span className="shrink-0 text-text-secondary" aria-hidden>
+                <ChevronDownIcon className="h-[18px] w-[18px]" />
+              </span>
+            </Button>
+          ) : (
+            <Card
               ref={cardRef}
-              className="relative overflow-visible rounded-modal border border-border bg-surface shadow-panel"
+              className="relative overflow-visible rounded-modal border-border bg-surface shadow-panel"
               role="dialog"
               aria-modal="true"
               aria-label="Route search"
               aria-expanded={true}
             >
-              <div className="flex items-center justify-between border-b border-border px-6 py-4">
+              <CardHeader className="flex flex-row items-center justify-between border-b border-border px-6 py-4 space-y-0">
                 <div>
-                  <h2 className="text-lg font-bold text-text-primary">
+                  <CardTitle className="text-lg font-bold text-text-primary">
                     Plan your route
-                  </h2>
+                  </CardTitle>
                   <p className="mt-0.5 text-sm text-text-secondary">
                     Pick a start point and destination
                   </p>
                 </div>
-                <button
+                <Button
                   type="button"
+                  variant="ghost"
                   onClick={closePanel}
-                  className="flex h-9 w-9 items-center justify-center rounded-input text-text-secondary transition-colors duration-200 hover:bg-card hover:text-text-primary"
+                  className="flex h-9 w-9 items-center justify-center rounded-input text-text-secondary hover:bg-card hover:text-text-primary p-0"
                   aria-label="Close"
                 >
-                  <CloseIcon />
-                </button>
-              </div>
+                  <CloseIcon className="h-[18px] w-[18px]" />
+                </Button>
+              </CardHeader>
 
-              <div className="space-y-3 px-6 py-5">
+              <CardContent className="space-y-3 px-6 py-5">
                 <div className="flex flex-col gap-2">
                   <label
                     className="text-xs font-medium text-text-secondary"
@@ -305,11 +322,11 @@ function SearchPanel({ onRouteReady, onRouteClear }: SearchPanelProps) {
                       className="pointer-events-none absolute left-4 top-1/2 z-10 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-success shadow-[0_0_0_3px_rgba(34,197,94,0.25)]"
                       aria-hidden
                     />
-                    <input
+                    <Input
                       ref={sourceInputRef}
                       id="source-input"
                       placeholder="Search starting location"
-                      className="w-full rounded-input border border-border bg-card py-3.5 pl-10 pr-4 text-base font-normal text-text-primary placeholder:text-text-secondary transition-colors duration-200 focus:border-primary disabled:cursor-not-allowed disabled:opacity-50"
+                      className="w-full rounded-input border-border bg-card py-3.5 pl-10 pr-4 text-base text-text-primary placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
                       value={sourceQuery}
                       onChange={handleSourceChange}
                       onFocus={() => setActiveField("source")}
@@ -337,11 +354,11 @@ function SearchPanel({ onRouteReady, onRouteClear }: SearchPanelProps) {
                       className="pointer-events-none absolute left-4 top-1/2 z-10 h-2.5 w-2.5 -translate-y-1/2 rounded-full bg-danger shadow-[0_0_0_3px_rgba(239,68,68,0.25)]"
                       aria-hidden
                     />
-                    <input
+                    <Input
                       ref={destinationInputRef}
                       id="destination-input"
                       placeholder="Search destination"
-                      className="w-full rounded-input border border-border bg-card py-3.5 pl-10 pr-4 text-base font-normal text-text-primary placeholder:text-text-secondary transition-colors duration-200 focus:border-primary disabled:cursor-not-allowed disabled:opacity-50"
+                      className="w-full rounded-input border-border bg-card py-3.5 pl-10 pr-4 text-base text-text-primary placeholder:text-text-secondary focus-visible:ring-1 focus-visible:ring-primary focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50"
                       value={destinationQuery}
                       onChange={handleDestinationChange}
                       onFocus={() => setActiveField("destination")}
@@ -356,7 +373,7 @@ function SearchPanel({ onRouteReady, onRouteClear }: SearchPanelProps) {
                     )}
                   </div>
                 </div>
-              </div>
+              </CardContent>
 
               <div className="flex flex-wrap items-center justify-between gap-4 border-t border-border px-6 py-4">
                 <div className="flex flex-col gap-2">
@@ -366,33 +383,37 @@ function SearchPanel({ onRouteReady, onRouteClear }: SearchPanelProps) {
                   >
                     Travel mode
                   </label>
-                  <select
-                    id="profile-select"
-                    className="min-w-[140px] cursor-pointer rounded-button border border-border bg-card px-4 py-2.5 text-sm font-normal text-text-primary transition-colors duration-200 hover:border-primary/50 disabled:cursor-not-allowed disabled:opacity-50"
+                  <Select
                     value={profile}
-                    onChange={(e) =>
-                      setProfile(e.target.value as RouteProfile)
-                    }
+                    onValueChange={(value) => setProfile(value as RouteProfile)}
                     disabled={loading}
                   >
-                    <option value="driving">Driving</option>
-                    <option value="walking">Walking</option>
-                    <option value="cycling">Cycling</option>
-                  </select>
+                    <SelectTrigger
+                      id="profile-select"
+                      className="min-w-[140px] cursor-pointer rounded-button border-border bg-card px-4 py-2.5 text-sm text-text-primary hover:border-primary/50"
+                    >
+                      <SelectValue placeholder="Select mode" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-card border-border text-text-primary">
+                      <SelectItem value="driving">Driving</SelectItem>
+                      <SelectItem value="walking">Walking</SelectItem>
+                      <SelectItem value="cycling">Cycling</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                <button
+                <Button
                   type="button"
                   className="rounded-button bg-primary px-8 py-3 text-sm font-medium text-text-primary transition-opacity duration-200 hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-45"
                   onClick={handleSubmit}
                   disabled={!canSubmit}
                 >
                   {loading ? "Finding route…" : "Show route"}
-                </button>
+                </Button>
               </div>
 
               {error && (
-                <div className="border-t border-border px-6 pb-5">
+                <div className="border-t border-border px-6 pb-5 pt-4">
                   <p
                     className="rounded-input border border-danger/30 bg-danger/10 px-4 py-3 text-sm text-danger"
                     role="alert"
@@ -401,67 +422,11 @@ function SearchPanel({ onRouteReady, onRouteClear }: SearchPanelProps) {
                   </p>
                 </div>
               )}
-            </div>
-        )}
+            </Card>
+          )}
         </div>
       </div>
     </>
-  );
-}
-
-function SearchIcon() {
-  return (
-    <svg
-      width="20"
-      height="20"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function ChevronDownIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="m6 9 6 6 6-6" />
-    </svg>
-  );
-}
-
-function CloseIcon() {
-  return (
-    <svg
-      width="18"
-      height="18"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M18 6 6 18" />
-      <path d="m6 6 12 12" />
-    </svg>
   );
 }
 
